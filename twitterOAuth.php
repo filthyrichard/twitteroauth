@@ -97,8 +97,12 @@ class TwitterOAuth {/*{{{*/
    * @returns array("oauth_token" => the access token,
    *                "oauth_token_secret" => the access secret)
    */
-  function getAccessToken($token = NULL) {/*{{{*/
-    $r = $this->oAuthRequest($this->accessTokenURL());
+  function getAccessToken($token = NULL, $pin = NULL) {/*{{{*/
+    $args = array();
+    if ($pin) {
+      $args['oauth_verifier'] = $pin;
+    }
+    $r = $this->oAuthRequest($this->accessTokenURL(), $args);
     $token = $this->oAuthParseResponse($r);
     $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
     return $token;
